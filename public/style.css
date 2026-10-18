@@ -1,0 +1,633 @@
+/* MoneySaver — עיצוב מינימלי, RTL */
+:root {
+  --bg: #f4f6f9;
+  --card: #ffffff;
+  --text: #1e2a38;
+  --muted: #8896a6;
+  --track: #e7ebf1;
+  --ok: #2fae74;      /* ירוק — פלוס */
+  --warn: #f0a640;
+  --danger: #e05a63;  /* אדום — מינוס */
+  --accent: #2fae74;
+  --radius: 16px;
+  --shadow: 0 2px 12px rgba(30, 42, 56, 0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Heebo', 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand { font-size: 1.15rem; }
+
+.month-nav { display: flex; align-items: center; gap: 8px; position: relative; }
+.month-label { font-weight: 500; min-width: 110px; text-align: center; cursor: pointer; user-select: none; }
+.month-label:hover { text-decoration: underline dotted; text-underline-offset: 3px; }
+/* בורר החודש ה-native מוסתר מתחת לתווית; לחיצה על התווית פותחת אותו (showPicker) */
+.month-picker {
+  position: absolute; inset-inline-start: 50%; bottom: 0;
+  width: 1px; height: 1px; opacity: 0; border: 0; padding: 0; pointer-events: none;
+}
+.month-btn {
+  border: none; background: var(--track); color: var(--text);
+  width: 32px; height: 32px; border-radius: 50%;
+  font-size: 1.2rem; cursor: pointer; line-height: 1;
+}
+.month-btn:hover { background: #d8dee8; }
+
+/* --- טאבים --- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px 0;
+  max-width: 900px;
+  margin: 0 auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a {
+  padding: 8px 14px;
+  border-radius: 10px 10px 0 0;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.tabs a.active {
+  background: var(--card);
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: var(--shadow);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 16px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.card h2 { font-size: 1rem; font-weight: 500; color: var(--muted); margin-bottom: 14px; }
+.card h3 { font-size: 0.9rem; font-weight: 500; color: var(--muted); margin: 14px 0 8px; }
+
+/* --- מחוון --- */
+.gauge-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 20px;
+}
+#gauge { width: min(340px, 80vw); display: block; }
+.gauge-center { position: absolute; top: 52%; text-align: center; }
+.gauge-title { color: var(--muted); font-size: 0.95rem; }
+.gauge-amount { font-size: 2.4rem; font-weight: 900; letter-spacing: -1px; }
+.gauge-amount.negative { color: var(--danger); }
+.gauge-sub { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+
+/* --- כרטיסי סיכום --- */
+.cards-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.cards-row-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.stat-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 6px; }
+.stat-value { font-size: 1.5rem; font-weight: 700; }
+.stat-value.plus { color: var(--ok); }
+.stat-value.minus { color: var(--danger); }
+.stat-value.warn { color: var(--warn); }
+.stat-sub { color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
+
+.chart-box { position: relative; height: 260px; }
+.chart-box.tall { height: 300px; }
+
+/* --- פסי קטגוריות --- */
+.category-bars { display: flex; flex-direction: column; gap: 6px; }
+.cat-bar-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+.cat-bar-name { min-width: 82px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cat-bar-track { flex: 1; height: 8px; background: var(--track); border-radius: 4px; overflow: hidden; }
+.cat-bar-fill { height: 100%; border-radius: 4px; }
+.cat-bar-amount { min-width: 64px; text-align: left; color: var(--muted); }
+.cat-bar-row.clickable { cursor: pointer; border-radius: 8px; transition: background 0.12s; }
+.cat-bar-row.clickable:hover { background: var(--track); }
+.cat-bar-row.active { background: var(--track); }
+.cat-detail-head { font-weight: 600; margin: 12px 0 4px; font-size: 0.9rem; }
+
+/* שורת סיכום בתחתית רשימת עסקאות */
+.tx-summary {
+  display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center;
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--track);
+  font-size: 0.85rem; color: var(--muted);
+}
+.tx-summary .minus { color: var(--danger); font-weight: 600; }
+.tx-summary .plus { color: var(--ok); font-weight: 600; }
+
+/* --- ניווט מחזור תזרים (עמוד הכנסות) --- */
+.cycle-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 10px 0 14px;
+  flex-wrap: wrap;
+}
+.cycle-nav .cycle-total { color: var(--muted); font-size: 0.9rem; }
+.cycle-nav .cycle-total .plus { color: var(--ok); }
+
+/* checkbox עם תווית בתוך form-grid — נשאר בשורה אחת */
+.inline-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.inline-check input { width: auto; }
+
+/* --- טפסים --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+/* טופס הכנסה — שורה אחת. flex-wrap גולש לשורה הבאה במסך צר במקום שהשדות
+   יסתירו זה את זה. הרוחבים הגמישים שומרים שכל שדה יהיה קריא. */
+.form-row-income {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+/* רק שדה השם מתרחב (grow); לשאר רוחב מפורש כדי שכל 6 הפריטים ייכנסו בשורה אחת
+   (סה"כ ~620px) ולא יגלשו. min-width:0 מבטל את רוחב-המינימום המובנה של input
+   (שאחרת מנפח אותו מעבר ל-flex-basis ודוחף פריטים לשורה הבאה). */
+.form-row-income input { min-width: 0; }
+.form-row-income #incName   { flex: 1 1 140px; }
+.form-row-income #incAmount { flex: 0 0 auto; width: 90px; }
+.form-row-income #incDate   { flex: 0 0 auto; width: 150px; }
+.form-row-income #incDay    { flex: 0 0 auto; width: 105px; }
+.form-row-income .btn-primary,
+.form-row-income .inline-check { flex: 0 0 auto; }
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border: 1px solid var(--track);
+  border-radius: 10px;
+  background: #fbfcfe;
+  color: var(--text);
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+.btn-primary, .btn-secondary, .btn-danger-outline {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { filter: brightness(1.07); }
+.btn-primary:disabled { opacity: 0.5; cursor: default; }
+.btn-secondary { background: var(--track); color: var(--text); }
+.btn-danger-outline { background: none; border: 1px solid var(--danger); color: var(--danger); }
+.form-msg { margin-top: 8px; font-size: 0.85rem; min-height: 1.2em; }
+.form-msg.error { color: var(--danger); }
+.form-msg.ok { color: var(--ok); }
+/* הודעת אישור/כישלון של טופס — בולטת מספיק כדי שלא תפוספס אחרי לחיצה */
+.form-msg.ok, .form-msg.error {
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 1px solid currentColor;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+/* --- רשימת עסקאות --- */
+.tx-list { list-style: none; display: flex; flex-direction: column; }
+.tx-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--track);
+}
+.tx-item:last-child { border-bottom: none; }
+.tx-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.tx-info { flex: 1; min-width: 0; }
+/* שמות עסק באנגלית (MOJO) מיושרים לימין כמו עברית — direction:rtl כופה יישור RTL */
+.tx-merchant { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: rtl; text-align: right; }
+.tx-meta { direction: rtl; text-align: right; }
+.tx-merchant.editable { cursor: text; }
+.tx-merchant.editable:hover { text-decoration: underline dotted; text-underline-offset: 3px; }
+.cycle-cell { white-space: nowrap; }
+.cycle-toggle {
+  border: none; background: none; cursor: pointer;
+  font-size: 0.95rem; padding: 2px 4px; border-radius: 6px;
+}
+.cycle-toggle:hover { background: var(--track); }
+.tx-edit, .dup-chg {
+  border: none; background: none; color: var(--muted);
+  cursor: pointer; font-size: 1rem; padding: 6px; border-radius: 8px;
+}
+.tx-edit:hover, .dup-chg:hover { color: var(--accent, #2563eb); background: var(--track); }
+.tx-meta { color: var(--muted); font-size: 0.78rem; }
+.tx-amount { font-weight: 700; white-space: nowrap; }
+.tx-amount.plus { color: var(--ok); }
+.tx-amount.minus { color: var(--danger); }
+.tx-delete, .icon-btn {
+  border: none; background: none; color: var(--muted);
+  cursor: pointer; font-size: 1rem; padding: 6px;
+  border-radius: 8px;
+}
+.tx-delete:hover, .icon-btn:hover { color: var(--danger); background: #fdeef0; }
+.tx-cat-select { font-size: 0.8rem; padding: 4px 8px; max-width: 140px; }
+
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 20px;
+  font-size: 0.72rem; background: var(--track); color: var(--muted);
+}
+.badge.dup { background: #fdeef0; color: var(--danger); }
+.badge.new { background: #e6f6ee; color: var(--ok); }
+.badge.on { background: #e6f6ee; color: var(--ok); }
+.badge.off { background: #fdeef0; color: var(--danger); }
+
+/* --- טבלת ייבוא --- */
+.import-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.import-table th, .import-table td {
+  padding: 8px 6px; text-align: right; border-bottom: 1px solid var(--track);
+}
+.import-table th { color: var(--muted); font-weight: 500; }
+.import-table tr.dup-row { opacity: 0.55; }
+.table-wrap { overflow-x: auto; }
+
+.dropzone {
+  border: 2px dashed var(--track);
+  border-radius: var(--radius);
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.dropzone:hover, .dropzone.dragover { border-color: var(--accent); background: #f2faf6; }
+
+.empty-state { text-align: center; color: var(--muted); padding: 24px 0; }
+
+/* display מפורש בקלאסים (row-flex/grid) גובר על תכונת hidden של הדפדפן */
+[hidden] { display: none !important; }
+
+.row-flex { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.spread { justify-content: space-between; }
+.grow { flex: 1; }
+.mt { margin-top: 12px; }
+
+.settings-grid { display: grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: center; }
+.settings-grid label { color: var(--muted); font-size: 0.9rem; }
+
+/* --- תלוש משכורת --- */
+/* כרטיסי סיכום: ברוטו / ניכויים / נטו */
+.ps-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 14px 0 18px; }
+.ps-tile { background: var(--bg); border-radius: 12px; padding: 12px 14px; }
+.ps-tile .stat-value { font-size: 1.3rem; }
+
+.ps-group { margin-bottom: 14px; }
+.ps-group h4 { font-size: 0.92rem; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+.ps-group .settings-grid { row-gap: 6px; }
+.ps-val { font-variant-numeric: tabular-nums; font-weight: 500; }
+
+/* כותרת סעיף עם כיתוב משני מימין */
+.ps-section-title {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin: 20px 0 4px; padding-top: 14px; border-top: 1px solid var(--track);
+}
+.ps-section-title h3 { margin: 0; }
+
+.ps-checks { list-style: none; padding: 0; margin: 8px 0 0; }
+.ps-checks li {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  border-inline-start: 4px solid var(--track);
+  background: var(--bg);
+}
+.ps-check-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ps-check-detail { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+.ps-checks li.ps-ok { border-inline-start-color: var(--ok); }
+.ps-checks li.ps-warn { border-inline-start-color: var(--warn); }
+.ps-checks li.ps-fail { border-inline-start-color: var(--danger); }
+.badge.ps-badge-ok { background: rgba(47, 174, 116, 0.14); color: var(--ok); }
+.badge.ps-badge-warn { background: rgba(240, 166, 64, 0.16); color: #b8791f; }
+.badge.ps-badge-fail { background: rgba(224, 90, 99, 0.14); color: var(--danger); }
+
+.ps-row-active { background: rgba(47, 174, 116, 0.07); }
+
+/* --- שאלות המשך --- */
+.qa-item { background: var(--bg); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+.qa-q { font-weight: 600; margin-bottom: 6px; }
+.qa-a { margin-top: 0; }
+.qa-a > :first-child { margin-top: 0; }
+.qa-ask { display: flex; gap: 8px; margin-top: 10px; }
+.qa-ask input { flex: 1; }
+.btn-link {
+  background: none; border: none; color: var(--muted);
+  font-size: 0.8rem; cursor: pointer; text-decoration: underline; padding: 0;
+  font-family: inherit;
+}
+.btn-link:hover { color: var(--text); }
+
+/* --- רינדור הניתוח (Markdown) --- */
+.analysis-md { line-height: 1.85; font-size: 0.92rem; margin-top: 8px; }
+.analysis-md h3 {
+  margin: 22px 0 8px; font-size: 1.02rem;
+  padding-inline-start: 10px; border-inline-start: 3px solid var(--accent);
+}
+.analysis-md h4, .analysis-md h5 { margin: 16px 0 4px; font-size: 0.95rem; color: var(--text); }
+.analysis-md p { margin: 7px 0; }
+.analysis-md ul { padding-inline-start: 20px; margin: 7px 0; }
+.analysis-md li { margin: 4px 0; }
+.analysis-md code { background: var(--bg); padding: 1px 5px; border-radius: 4px; font-size: 0.88em; }
+.analysis-md strong { color: var(--text); font-weight: 600; }
+.analysis-md .md-note {
+  background: var(--bg); border-inline-start: 3px solid var(--track);
+  padding: 8px 12px; border-radius: 8px; color: var(--muted); font-size: 0.88rem;
+}
+.analysis-md .md-ok { color: var(--ok); }
+.analysis-md .md-warn { color: var(--warn); }
+.analysis-md .md-bad { color: var(--danger); }
+
+/* טבלאות הניתוח: נכנסות לרוחב הדף ונשברות לשורות — בלי סרגל גלילה אופקי.
+   table-layout: fixed מכריח את העמודות להצטמצם במקום להרחיב את הטבלה. */
+.md-table-wrap { margin: 10px 0; max-width: 100%; }
+.md-table {
+  width: 100%; border-collapse: collapse; font-size: 0.88rem;
+  table-layout: fixed;
+}
+.md-table th, .md-table td {
+  padding: 8px 10px; text-align: start;
+  border-bottom: 1px solid var(--track);
+  font-variant-numeric: tabular-nums;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.md-table th { background: var(--bg); font-weight: 600; color: var(--muted); }
+.md-table tr:last-child td { border-bottom: none; }
+
+/* --- משכנתא --- */
+.form-msg.warn-msg { color: #b8791f; }
+
+/* טאב המשכנתא רחב יותר — הטבלאות בניתוח (שלוש חלופות, מסלול-מסלול) צפופות
+   מדי ב-900px ונאלצות לגלול. יש מקום במסך; מרחיבים רק את הטאב הזה. */
+body[data-view="mortgage"] .container,
+body[data-view="mortgage"] .tabs { max-width: 1400px; }
+
+/* שורת פעולות דביקה מתחת ל-header — שמירה וניתוח זמינים בכל גובה גלילה */
+.mg-actions {
+  position: sticky;
+  z-index: 9;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.mg-actions .form-msg { margin-top: 0; min-height: 0; }
+
+/* בורר מנוע ה-LLM בהגדרות */
+.engine-opt {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; margin-bottom: 8px;
+  background: var(--bg); border-radius: 10px;
+  cursor: pointer; font-size: 0.9rem;
+}
+.engine-opt input { width: auto; }
+
+/* הסבר בולט ליד כפתור פעולה (מתי מתפרסם מדד חדש) */
+.mg-hint {
+  font-size: 0.85rem;
+  color: var(--text);
+  background: rgba(240, 166, 64, 0.14);
+  border-inline-start: 3px solid var(--warn);
+  border-radius: 0;
+  padding: 6px 10px;
+}
+
+.mg-textarea { margin-top: 12px; }
+.mg-textarea label { display: block; color: var(--muted); font-size: 0.9rem; margin-bottom: 4px; }
+.mg-textarea textarea { width: 100%; resize: vertical; }
+
+/* כרטיס מסלול — כותרת (שם/סוג/הצמדה/מחיקה) ומעליה גריד השדות */
+.mg-track { background: var(--bg); border-radius: 12px; padding: 12px 14px; margin-top: 10px; }
+.mg-track-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.mg-track-head input[type="text"] { flex: 1 1 160px; min-width: 120px; }
+.mg-track-head .btn-danger-outline { margin-inline-start: auto; }
+.mg-check { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted); white-space: nowrap; }
+.mg-check input { width: auto; }
+
+.mg-track-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+.mg-field label { display: block; color: var(--muted); font-size: 0.78rem; margin-bottom: 3px; }
+.mg-field input { width: 100%; padding: 8px 10px; font-size: 0.88rem; }
+
+/* סימולציית "מה יקרה אם" — הסבר קצר מתחת לשדה, ועמודת הפרש צבועה בטבלה.
+   ירוק = לטובת המשתמש (פחות זמן, פחות כסף), אדום = יוצא יותר כסף מהכיס. */
+.mg-sim-hint { color: var(--muted); font-size: 0.72rem; margin-top: 3px; }
+.mg-sim-delta { font-weight: 600; white-space: nowrap; }
+.mg-sim-delta.down { color: var(--ok); }
+.mg-sim-delta.up { color: var(--danger); }
+
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.filters input, .filters select { font-size: 0.85rem; padding: 8px 10px; }
+
+/* ================= צ'אט חופשי (פאנל קבוע בכל הטאבים) ================= */
+/* הפאנל fixed בצד ימין הפיזי של המסך ונשאר במקומו בגלילה. במסך רחב הגוף מקבל
+   padding-right בגודל הפאנל, כך שה-container (שממורכז ב-margin auto) נדחק שמאלה
+   ולא מוסתר מאחוריו; במסך צר הפאנל הופך ל-overlay עם רקע מעומעם. */
+:root { --chat-w: 380px; }
+
+.chat-toggle {
+  margin-inline-start: 10px;
+  border: none; background: var(--track); color: var(--text);
+  padding: 6px 12px; border-radius: 999px; cursor: pointer;
+  font-family: inherit; font-size: 0.85rem;
+}
+.chat-toggle:hover { background: #d8dee8; }
+.chat-toggle[aria-expanded="true"] { background: var(--accent); color: #fff; }
+
+.chat-panel {
+  position: fixed; top: 0; right: 0; z-index: 30;
+  width: var(--chat-w); max-width: 100vw; height: 100vh;
+  background: var(--card); box-shadow: -2px 0 16px rgba(30, 42, 56, 0.12);
+  display: flex; flex-direction: column;
+}
+.chat-panel[hidden] { display: none; }
+
+.chat-backdrop {
+  position: fixed; inset: 0; z-index: 29;
+  background: rgba(30, 42, 56, 0.35);
+}
+.chat-backdrop[hidden] { display: none; }
+
+.chat-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+  padding: 14px 16px; border-bottom: 1px solid var(--track);
+}
+.chat-context { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+.chat-head-btns { display: flex; gap: 4px; }
+.chat-icon-btn {
+  border: none; background: transparent; cursor: pointer;
+  font-size: 1rem; padding: 4px 7px; border-radius: 8px; color: var(--muted);
+}
+.chat-icon-btn:hover { background: var(--bg); color: var(--text); }
+
+.chat-log {
+  flex: 1; overflow-y: auto; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.chat-empty { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+.chat-empty .chat-sample {
+  display: block; width: 100%; text-align: start; margin-top: 6px;
+  background: var(--bg); border: none; border-radius: 10px;
+  padding: 8px 10px; cursor: pointer; font-family: inherit;
+  font-size: 0.85rem; color: var(--text);
+}
+.chat-empty .chat-sample:hover { background: var(--track); }
+/* "הצג שיחות קודמות" — הפאנל נפתח נקי, השיחות הישנות נחשפות בלחיצה */
+.chat-empty #chatShowOlder { display: block; margin-top: 12px; }
+.chat-older { text-align: center; font-size: 0.8rem; }
+
+.chat-msg { border-radius: 12px; padding: 10px 12px; font-size: 0.9rem; }
+.chat-msg.q { background: var(--accent); color: #fff; align-self: flex-start; max-width: 92%; }
+.chat-msg.a { background: var(--bg); }
+.chat-msg.err { background: rgba(224, 90, 99, 0.12); color: var(--danger); }
+.chat-msg .analysis-md { margin-top: 0; font-size: 0.88rem; line-height: 1.75; }
+.chat-msg .analysis-md h3 { margin: 14px 0 6px; font-size: 0.95rem; }
+.chat-meta { color: var(--muted); font-size: 0.72rem; margin-top: 6px; }
+
+.chat-composer {
+  display: flex; gap: 8px; align-items: flex-end;
+  padding: 10px 16px; border-top: 1px solid var(--track);
+}
+.chat-composer textarea {
+  flex: 1; resize: none; font-family: inherit; font-size: 0.9rem;
+  padding: 9px 11px; border: 1px solid var(--track); border-radius: 10px;
+  background: var(--bg); color: var(--text); max-height: 140px;
+}
+.chat-send { padding: 9px 16px; }
+.chat-foot { padding: 0 16px 12px; color: var(--muted); font-size: 0.75rem; line-height: 1.6; }
+
+/* מסך רחב — דחיפת התוכן במקום כיסוי */
+@media (min-width: 1100px) {
+  body.chat-open { padding-right: var(--chat-w); }
+  body.chat-open .chat-backdrop { display: none; }
+}
+@media (max-width: 1099px) {
+  .chat-panel { width: min(var(--chat-w), 100vw); }
+}
+
+/* פאנל כפילויות בטאב העסקאות */
+.dup-clean { color: var(--ok); font-size: 0.9rem; padding: 4px 0; }
+.dup-group {
+  border: 1px solid var(--track);
+  border-radius: 12px;
+  padding: 8px 10px;
+  margin-top: 10px;
+}
+.dup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding-bottom: 4px;
+  border-bottom: 1px dashed var(--track);
+}
+/* "לא כפילות" — אלו חיובים נפרדים. לא משנה נתונים, ולכן לא מסומן כהרסני. */
+.dup-ok {
+  flex: none;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--track);
+  border: 1px solid var(--track);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.dup-ok:hover { border-color: var(--ok); color: var(--ok); }
+/* כפתור שנראה כמו קישור (שחזור סימוני "לא כפילות") */
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.dup-group .tx-item:last-child { border-bottom: none; }
+
+/* הודעת אישור צפה (toast) — יושבת על body, שורדת render() מלא */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  inset-inline-start: 24px;
+  z-index: 60;
+  max-width: min(420px, calc(100vw - 48px));
+  padding: 12px 16px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--track);
+  border-inline-start: 4px solid var(--ok);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+
+/* --- מובייל --- */
+@media (max-width: 640px) {
+  .cards-row, .cards-row-2 { grid-template-columns: 1fr; }
+  .gauge-amount { font-size: 2rem; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid .btn-primary { grid-column: 1 / -1; }
+  .settings-grid { grid-template-columns: 1fr; gap: 6px; }
+  .chart-box { height: 220px; }
+}

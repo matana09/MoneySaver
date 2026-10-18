@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoneySaver — התזרים שלי</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">💰 <strong>MoneySaver</strong>
+      <button id="chatToggle" class="chat-toggle" title="שאלה חופשית על הנתונים (Alt+ש)" aria-expanded="false">💬 שאלה</button>
+    </div>
+    <div class="month-nav">
+      <button id="nextMonth" class="month-btn" title="חודש הבא">‹</button>
+      <span id="monthLabel" class="month-label" role="button" tabindex="0" title="לחץ לבחירת חודש"></span>
+      <input type="month" id="monthPicker" class="month-picker" aria-label="בחר חודש">
+      <button id="prevMonth" class="month-btn" title="חודש קודם">›</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <a href="#dashboard" data-view="dashboard">🏠 דשבורד</a>
+    <a href="#transactions" data-view="transactions">📋 עסקאות</a>
+    <a href="#import" data-view="import">📥 ייבוא</a>
+    <a href="#categories" data-view="categories">🏷️ קטגוריות</a>
+    <a href="#income" data-view="income">💵 הכנסות והוצאות</a>
+    <a href="#payslip" data-view="payslip">🧾 תלוש</a>
+    <a href="#mortgage" data-view="mortgage">🏡 משכנתא</a>
+    <!-- חיזוי מוסתר כרגע לבקשת המשתמש — להחזרה: בטל את ההערה כאן ואת השורה
+         forecast: viewForecast ב-views (app.js)
+    <a href="#forecast" data-view="forecast">🔮 חיזוי</a>
+    -->
+    <a href="#settings" data-view="settings">⚙️ הגדרות</a>
+  </nav>
+
+  <main class="container" id="view"></main>
+
+  <!-- צ'אט חופשי — קבוע בכל הטאבים, מחוץ ל-#view כדי שלא ייבנה מחדש בכל ניווט -->
+  <div class="chat-backdrop" id="chatBackdrop" hidden></div>
+  <aside class="chat-panel" id="chatPanel" hidden aria-label="צ'אט חופשי">
+    <div class="chat-head">
+      <div>
+        <strong>💬 שאלה חופשית</strong>
+        <div class="chat-context" id="chatContext"></div>
+      </div>
+      <div class="chat-head-btns">
+        <button id="chatClear" class="chat-icon-btn" title="נקה את היסטוריית השיחה">🧹</button>
+        <button id="chatClose" class="chat-icon-btn" title="סגור">✕</button>
+      </div>
+    </div>
+    <div class="chat-log" id="chatLog"></div>
+    <div class="chat-composer">
+      <textarea id="chatInput" rows="2" maxlength="1000"
+                placeholder="שאל כל שאלה על הנתונים שלך… (Enter לשליחה)"></textarea>
+      <button id="chatSend" class="btn-primary chat-send">שלח</button>
+    </div>
+    <div class="chat-foot" id="chatFoot"></div>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>

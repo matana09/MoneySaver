@@ -1,0 +1,30 @@
+{
+  "name": "moneysaver",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "אפליקציית ניהול הוצאות חודשיות לוקאלית — MoneySaver",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node tests/run-tests.mjs",
+    "backup": "node scripts/backup.js",
+    "security:check": "node scripts/check-publication.mjs --history",
+    "security:secrets": "node scripts/scan-secrets.mjs",
+    "export:github": "node scripts/export-github.mjs",
+    "security:hooks": "git config --local core.hooksPath .githooks"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.1",
+    "express": "^5.2.1",
+    "grammy": "^1.44.0",
+    "jimp": "^1.6.1",
+    "multer": "^2.2.0",
+    "pdf-parse": "^2.4.5",
+    "tesseract.js": "^7.0.0"
+  }
+}

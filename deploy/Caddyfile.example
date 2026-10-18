@@ -1,0 +1,10 @@
+# Replace the example domain and configure DNS before starting Caddy.
+# Keep Caddy on the same machine. Firewall port 3000 against remote connections.
+money.example.com {
+    reverse_proxy 127.0.0.1:3000 {
+        header_up Host money.example.com
+        header_up X-Forwarded-Proto https
+        header_up -Forwarded
+        header_up -X-Forwarded-Host
+    }
+}

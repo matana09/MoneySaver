@@ -1,0 +1,48 @@
+# dependencies
+node_modules/
+
+# נתונים מקומיים — כולל DB עם ה-token של הבוט. לעולם לא לקומיט.
+data/
+backups/
+
+# בדיקות — DB זמני
+tests/.tmp/
+
+# python
+__pycache__/
+*.pyc
+
+# tesseract.js — קבצי שפה (OCR), מורדים אוטומטית בהרצה ראשונה
+/*.traineddata
+
+# env / secrets
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.pem
+*.key
+*.p12
+*.pfx
+.codex-remote-attachments/
+output/
+tmp/
+.claude/
+# מסמכי עבודה פרטיים נשארים מקומיים; היסטוריה קיימת נחסמת ב-pre-push.
+/AGENTS.md
+/CLAUDE.md
+/HANDOFF.md
+/PERSISTENT_MENU.md
+/PRD_MoneySaver.docx
+/PRD_MoneySaver.md
+/moneysaver-task.xml
+/scripts/moneysaver-backup-task.xml
+/scripts/moneysaver-watchdog-task.xml
+
+# לוגי ריצה (run-hidden.vbs) — לדיבוג נפילות
+logs/

@@ -1,0 +1,7 @@
+{
+  "tests/fixtures/ocr-sample.png": "c678ed7792dca51df03f3ee9aee241339362eec2e6db3616a25a955adf5cc331",
+  "tests/fixtures/ocr-table-borders.png": "c8e3d33d8d0bb974629d02cd60fdb9d8454f2037a44107714578ae1af3366372",
+  "tests/fixtures/ocr-table-lowres.jpg": "0aec839bb30a9e39acbcfe183a7770c32e7de0495d85e0878efa1a36b6800607",
+  "tests/fixtures/ocr-table-sample.png": "df66da7d47afbf2e29f8f89074e6614fd1ba4d84af52a23d27f113cf007095dd",
+  "tests/fixtures/payslip-sample.pdf": "ccee3bdf795fd765b5654ee210ff264abe14c6a56fd2e51dfb1f7031b71daa1b"
+}
